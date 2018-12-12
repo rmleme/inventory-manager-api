@@ -1,0 +1,36 @@
+version: '2'
+
+services: 
+  becommerce-mysql:
+    image: mysql:5.7.22
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=p4SSW0rd
+      - MYSQL_DATABASE=becommerce-db
+      - MYSQL_USER=becommerce-user
+      - MYSQL_PASSWORD=becommerce
+  becommerce-product-catalog-api:
+    image: becommerce-product-catalog-api:1.1
+    depends_on:
+      - becommerce-mysql
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_HOST=becommerce-mysql
+      - DATABASE_PORT=3306
+      - DATABASE_USER=becommerce-user
+      - DATABASE_PASSWORD=becommerce
+      - DATABASE_NAME=becommerce-db
+  becommerce-inventory-manager-api:
+    image: becommerce-inventory-manager-api:1.1
+    depends_on:
+      - becommerce-mysql
+    ports:
+      - "9090:8080"
+    environment:
+      - DATABASE_HOST=becommerce-mysql
+      - DATABASE_PORT=3306
+      - DATABASE_USER=becommerce-user
+      - DATABASE_PASSWORD=becommerce
+      - DATABASE_NAME=becommerce-db
